@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ISOMET_Dual_Tracking_System.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ISOMET_Dual_Tracking_System"
+    Shell.FlyoutBehavior="Disabled"
+    Title="ISOMET_Dual_Tracking_System"
+    BackgroundColor="#1E1E1E"
+    TabBarBackgroundColor="#121212"
+    TabBarForegroundColor="#BB86FC"
+    TabBarTitleColor="#BB86FC"
+    TabBarUnselectedColor="#FFFFFF">
+
+    <TabBar>
+        <Tab Title="Inventory"
+             Icon="inventorysvg.png">
+            <ShellContent ContentTemplate="{DataTemplate local:Inventory}" />
+        </Tab>
+        <Tab Title="Traveler"
+             Icon="crystal.png">
+            <ShellContent ContentTemplate="{DataTemplate local:Traveler}" />
+        </Tab>
+        <Tab Title="Optical Scanning"
+             Icon="laser.png">
+            <ShellContent ContentTemplate="{DataTemplate local:OScanning}" />
+        </Tab>
+        <Tab Title="Database Reader"
+             Icon="book2.png">
+            <ShellContent ContentTemplate="{DataTemplate local:Reader}" />
+        </Tab>
+        <Tab Title="Config"
+             Icon="config.png">
+            <ShellContent ContentTemplate="{DataTemplate local:Configuration}" />
+        </Tab>
+    </TabBar>
+</Shell>

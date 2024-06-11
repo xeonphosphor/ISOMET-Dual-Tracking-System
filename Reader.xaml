@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ISOMET_Dual_Tracking_System.Reader" >
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="chev80.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="Isomet Corporation logo" />
+
+            <Label
+                Text="Database Reader"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Select Database
+                </Label.Text>
+            </Label>
+
+            <StackLayout Orientation="Vertical" Spacing="5">
+                <RadioButton 
+                    x:Name="invButton"
+                    Content="Inventory"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    CheckedChanged="onSelectionStatusChanged" />
+
+                <RadioButton 
+                    x:Name="trvButton"
+                    Content="Traveler"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    CheckedChanged="onSelectionStatusChanged" />
+
+                <RadioButton 
+                    x:Name="osButton"
+                    Content="Optical Scanning"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    CheckedChanged="onSelectionStatusChanged" />
+            </StackLayout>
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Item Information
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="identifier"
+                Placeholder="Enter Identifier" />
+
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <RadioButton 
+                     x:Name="singleButton"
+                     Content="Last Location"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start"
+                     CheckedChanged="onReportModeChanged" />
+
+                <RadioButton 
+                     x:Name="reportButton"
+                     Content="Report"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start"
+                     CheckedChanged="onReportModeChanged" />
+            </StackLayout>
+
+            <Button
+                x:Name="searchBtn"
+                Text="Search" 
+                SemanticProperties.Hint="Check status of identifier"
+                Clicked="searchBtnClicked"
+                HorizontalOptions="Fill" 
+                BackgroundColor="#1E1E1E" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Full History
+                </Label.Text>
+            </Label>
+
+            <Editor 
+                x:Name="readerEditor"
+                IsReadOnly="True"
+                VerticalOptions="FillAndExpand"
+                AutoSize="TextChanges" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

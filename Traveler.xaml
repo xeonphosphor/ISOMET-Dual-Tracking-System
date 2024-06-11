@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ISOMET_Dual_Tracking_System.Traveler">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="chev80.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="Isomet Corporation logo" />
+
+            <Label
+                Text="Traveler"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Crystal Information
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="identifierField"
+                   Placeholder="Crystal Identifier" 
+                   Keyboard="Numeric" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Traveler Step
+                </Label.Text>
+            </Label>
+
+            <Picker x:Name="picker"
+                    Title="Select Traveler step">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>1 Fab - Fabrication</x:String>
+                        <x:String>2 Fab - Off Axis Angle</x:String>
+                        <x:String>3 Fab - Mark Blocks</x:String>
+                        <x:String>4 Pol - Optical Polish</x:String>
+                        <x:String>5 QC - Inspect No AR</x:String>
+                        <x:String>6 Coat - AR Machine</x:String>
+                        <x:String>7 Coat - AR Vacuum</x:String>
+                        <x:String>8 Coat - Material/Thick</x:String>
+                        <x:String>9 Coat - AR Temp</x:String>
+                        <x:String>10 Coat - Actual Side 1</x:String>
+                        <x:String>11 Coat - Actual Side 2</x:String>
+                        <x:String>12 QC - Side A Min refl</x:String>
+                        <x:String>13 QC - Side B Min refl</x:String>
+                        <x:String>14 QC - Inspect AR</x:String>
+                        <x:String>15 Bond - Coat Op. Surf.</x:String>
+                        <x:String>16 Bond - Bonder/Runs</x:String>
+                        <x:String>17 Bond - Oxide/Seed</x:String>
+                        <x:String>18 Bond - Metal/Thickness</x:String>
+                        <x:String>19 Bond - Deposit Total</x:String>
+                        <x:String>20 Bond - Pressure</x:String>
+                        <x:String>21 Bond - Final Vacuum</x:String>
+                        <x:String>22 QC - Inspect Bond</x:String>
+                        <x:String>23 Pol - Lap Thickness</x:String>
+                        <x:String>24 Fab - Cut Angle</x:String>
+                        <x:String>25 Fab - Inspect</x:String>
+                        <x:String>26 Fab - Slicing</x:String>
+                        <x:String>27 Fab - Mark Slices</x:String>
+                        <x:String>28 Fab - Comp Angle</x:String>
+                        <x:String>29 Pol - Cleaning</x:String>
+                        <x:String>30 Bond - Absorber Bond</x:String>
+                        <x:String>31 Bond - Electrode Mask</x:String>
+                        <x:String>32 QC - Inspect Bond</x:String>
+                        <x:String>33 QC - Raw VSWR</x:String>
+                        <x:String>34 Assy - Attach Leads</x:String>
+                        <x:String>35 Assy - Mount in Case</x:String>
+                        <x:String>36 QC - Tune</x:String>
+                        <x:String>37 QC - Clean Optics</x:String>
+                        <x:String>38 QC - Mech. Inspect</x:String>
+                        <x:String>39 QC - Savvy Scr/Dig</x:String>
+                        <x:String>40 QC - Water Test</x:String>
+                        <x:String>41 QC - Attach Cover</x:String>
+                        <x:String>42 QC - Optical Test</x:String>
+                        <x:String>43 QC - Tuning Test</x:String>
+                        <x:String>44 QC - Serialize</x:String>
+                        <x:String>45 QC - Final Inspection</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Traveler Data Entry
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="valueField"
+                   Placeholder="Actual Values" />
+
+            <Button
+                x:Name="travelerBtn"
+                Text="Submit" 
+                SemanticProperties.Hint="Submit information to database"
+                Clicked="OnButtonClicked"
+                HorizontalOptions="Fill"
+                BackgroundColor="#1E1E1E" />
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ISOMET_Dual_Tracking_System.Configuration">
+    
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="chev80.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="Isomet Corporation logo" />
+
+            <Label
+                Text="Configuration"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Network Credentials
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="netServer"
+                Placeholder="Server Name/IP" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Database Location
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="directory"
+                   Placeholder="Inventory" />
+
+            <Entry x:Name="directory2"
+                   Placeholder="Traveler" />
+
+            <Entry x:Name="directory3"
+                   Placeholder="Optical Scanning" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    User Information
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="userName"
+                   Placeholder="Name" />
+
+            <Entry x:Name="department"
+                   Placeholder="Department" />
+
+            <Button
+                   x:Name="configBtn"
+                   Text="Apply Configuration Changes" 
+                   SemanticProperties.Hint="Apply changes to configuration"
+                   Clicked="OnButtonClicked"
+                   HorizontalOptions="Fill" 
+                   BackgroundColor="#1E1E1E" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

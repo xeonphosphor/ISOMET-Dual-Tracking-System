@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ISOMET_Dual_Tracking_System.Inventory">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="chev80.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="Isomet Corporation logo" />
+
+            <Label
+                Text="Unit Tracking System"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Item Information
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="entry"
+                   Placeholder="Scan/Enter Identifier"
+                   TextChanged="OnEntryTextChanged"
+                   Completed="OnEntryCompleted" 
+                   Keyboard="Numeric" />
+
+            <Button
+                x:Name="ScannerBtn"
+                Text="Submit" 
+                SemanticProperties.Hint="Submit identifier to database"
+                Clicked="OnButtonClicked"
+                HorizontalOptions="Fill" 
+                BackgroundColor="#1E1E1E" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

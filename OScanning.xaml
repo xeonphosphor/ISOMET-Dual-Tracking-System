@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ISOMET_Dual_Tracking_System.OScanning">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="chev80.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="Isomet Corporation logo" />
+            
+            <Label
+                Text="Optical Scanning"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Crystal Information
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="identifierField"
+                   Placeholder="Crystal Identifier" 
+                   Keyboard="Numeric" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Wavelength
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="waveField"
+                   Placeholder="Enter wavelength" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Laser
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="laserField1"
+                   Placeholder="⊥" />
+
+            <Entry x:Name="laserField2"
+                   Placeholder="II" />
+
+            <Label FontAttributes="Bold">
+                <Label.Text>
+                    Static Loss
+                </Label.Text>
+            </Label>
+
+            <Entry x:Name="slField"
+                   Placeholder="%" />
+
+            <Button
+                   x:Name="osBtn"
+                   Text="Submit Data" 
+                   SemanticProperties.Hint="Submit data to database"
+                   Clicked="OnButtonClicked"
+                   HorizontalOptions="Fill" 
+                   BackgroundColor="#1E1E1E" /> 
+        </VerticalStackLayout>
+    </ScrollView>
+ 
+</ContentPage>
