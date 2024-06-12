@@ -61,7 +61,7 @@ public partial class Reader : ContentPage
 	{
         if (reportMode)
         {
-			readerEditor.Text = "Last 10 Movements:\n";
+			readerEditor.Text = "Movement History:\n";
             if (selectedDB == 1)
             {
 				string message = await database.repInventory(identifier.Text);
