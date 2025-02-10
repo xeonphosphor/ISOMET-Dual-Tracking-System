@@ -21,7 +21,7 @@
              Icon="crystal.png">
             <ShellContent ContentTemplate="{DataTemplate local:Traveler}" />
         </Tab>
-        <Tab Title="Optical Scanning"
+        <Tab Title="Optical Testing"
              Icon="laser.png">
             <ShellContent ContentTemplate="{DataTemplate local:OScanning}" />
         </Tab>

@@ -17,79 +17,85 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Select Database
-                </Label.Text>
-            </Label>
+            <Frame BorderColor="Gray"
+                   CornerRadius="10">
+                <StackLayout Spacing="10">
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Select Database
+                        </Label.Text>
+                    </Label>
 
-            <StackLayout Orientation="Vertical" Spacing="5">
-                <RadioButton 
-                    x:Name="invButton"
-                    Content="Inventory"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                    CheckedChanged="onSelectionStatusChanged" />
+                    <StackLayout Orientation="Vertical" Spacing="5">
+                        <RadioButton 
+                            x:Name="invButton"
+                            Content="Inventory"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            CheckedChanged="onSelectionStatusChanged" />
 
-                <RadioButton 
-                    x:Name="trvButton"
-                    Content="Traveler"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                    CheckedChanged="onSelectionStatusChanged" />
+                        <RadioButton 
+                            x:Name="trvButton"
+                            Content="Traveler"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            CheckedChanged="onSelectionStatusChanged" />
 
-                <RadioButton 
-                    x:Name="osButton"
-                    Content="Optical Scanning"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                    CheckedChanged="onSelectionStatusChanged" />
-            </StackLayout>
+                        <RadioButton 
+                            x:Name="osButton"
+                            Content="Optical Testing"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            CheckedChanged="onSelectionStatusChanged" />
+                    </StackLayout>
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Item Information
-                </Label.Text>
-            </Label>
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Item Information
+                        </Label.Text>
+                    </Label>
 
-            <Entry x:Name="identifier"
-                Placeholder="Enter Identifier" />
+                    <Entry x:Name="identifier"
+                           Placeholder="Enter Identifier" 
+                           TextChanged="onTextChanged" />
 
-            <StackLayout Orientation="Horizontal" Spacing="10">
-                <RadioButton 
-                     x:Name="singleButton"
-                     Content="Last Location"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Start"
-                     CheckedChanged="onReportModeChanged" />
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <RadioButton 
+                             x:Name="singleButton"
+                             Content="Last Location"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Start"
+                             CheckedChanged="onReportModeChanged" />
 
-                <RadioButton 
-                     x:Name="reportButton"
-                     Content="Report"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Start"
-                     CheckedChanged="onReportModeChanged" />
-            </StackLayout>
+                        <RadioButton 
+                             x:Name="reportButton"
+                             Content="Report"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Start"
+                             CheckedChanged="onReportModeChanged" />
+                    </StackLayout>
 
-            <Button
-                x:Name="searchBtn"
-                Text="Search" 
-                SemanticProperties.Hint="Check status of identifier"
-                Clicked="searchBtnClicked"
-                HorizontalOptions="Fill" 
-                BackgroundColor="#1E1E1E" />
+                    <Button
+                        x:Name="searchBtn"
+                        Text="Search" 
+                        SemanticProperties.Hint="Check status of identifier"
+                        Clicked="searchBtnClicked"
+                        HorizontalOptions="Fill" 
+                        BackgroundColor="#1E1E1E" />
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Full History
-                </Label.Text>
-            </Label>
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Full History
+                        </Label.Text>
+                    </Label>
 
-            <Editor 
-                x:Name="readerEditor"
-                IsReadOnly="True"
-                VerticalOptions="FillAndExpand"
-                AutoSize="TextChanges" />
+                    <Editor 
+                        x:Name="readerEditor"
+                        IsReadOnly="True"
+                        VerticalOptions="FillAndExpand"
+                        AutoSize="TextChanges" />
+                </StackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

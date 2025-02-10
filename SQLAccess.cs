@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ISOMET_Dual_Tracking_System
 {
@@ -55,25 +56,25 @@ namespace ISOMET_Dual_Tracking_System
         {
             try
             {
-                Debug.WriteLine("A");
+                //Debug.WriteLine("A");
                 var entry = new InventoryEntry
                 {
                     Barcode = scannedCode,
                     Name = name1,
                     Location = location1,
                     Status = value,
-                    Date = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss")
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 };
-                Debug.WriteLine("B");
+                //Debug.WriteLine("B");
 
                 var json = JsonSerializer.Serialize(entry);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                Debug.WriteLine("C");
+                //Debug.WriteLine("C");
                 
-                Debug.WriteLine("D");
-                Debug.WriteLine($"Sending POST request to {server1}/{database1}/Inventory/add");
-                var response = await client.PostAsync($"https://{server1}/{database1}/Inventory/add", content);
-                Debug.WriteLine("POST request sent.");
+                //Debug.WriteLine("D");
+                //Debug.WriteLine($"Sending POST request to {server1}:443/{database1}/Inventory/add");
+                var response = await client.PostAsync($"https://{server1}:443/{database1}/Inventory/add", content);
+                //Debug.WriteLine("POST request sent.");
                 response.EnsureSuccessStatusCode();
                 
 
@@ -119,12 +120,12 @@ namespace ISOMET_Dual_Tracking_System
                     Name = name1,
                     Step = step,
                     Value = value,
-                    Date = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss")
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 };
 
                 var json = JsonSerializer.Serialize(entry);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync($"https://{server1}/{database2}/Traveler/add", content);
+                var response = await client.PostAsync($"https://{server1}:443/{database2}/Traveler/add", content);
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -150,6 +151,52 @@ namespace ISOMET_Dual_Tracking_System
             }
         }
 
+        private async Task<string> scanSlicesTraveler(string step, string value)
+        {
+            try
+            {
+                var entry = new TravelerEntry
+                {
+                    Barcode = scannedCode,
+                    Name = name1,
+                    Step = step,
+                    Value = value,
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                };
+
+                var json = JsonSerializer.Serialize(entry);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"https://{server1}:443/{database2}/Traveler/add", content);
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var message = "Successfully scanned in slices.";
+                    return message;
+                }
+                else
+                {
+                    var message = "Scan failed.";
+                    return message;
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                var message = httpEx.Message;
+                return message;
+            }
+            catch (TaskCanceledException timeoutEx)
+            {
+                var message = "The request timed out.";
+                return message;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                return message;
+            }
+        }
+
         private async Task scanOpticalScanning(string wl, string l1, string l2, string sl)
         {
             try
@@ -162,21 +209,21 @@ namespace ISOMET_Dual_Tracking_System
                     Laser1 = l1,
                     Laser2 = l2,
                     StaticLoss = sl,
-                    Date = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss")
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 };
 
                 var json = JsonSerializer.Serialize(entry);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync($"https://{server1}/{database3}/OScanning/add", content);
+                var response = await client.PostAsync($"https://{server1}:443/{database3}/OScanning/add", content);
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await App.Current.MainPage.DisplayAlert("Optical Scanning", $"Sucessfully scanned in {scannedCode}.", "OK");
+                    await App.Current.MainPage.DisplayAlert("Optical Testing", $"Sucessfully scanned in {scannedCode}.", "OK");
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Optical Scanning", "Scan failed.", "OK");
+                    await App.Current.MainPage.DisplayAlert("Optical Testing", "Scan failed.", "OK");
                 }
             }
             catch (HttpRequestException httpEx)
@@ -201,7 +248,7 @@ namespace ISOMET_Dual_Tracking_System
         {
             try
             {
-                var response = await client.GetAsync($"https://{server1}/{database1}/Inventory/get?barcode={text}&report=True");
+                var response = await client.GetAsync($"https://{server1}:443/{database1}/Inventory/get?barcode={text}&report=True");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -245,11 +292,59 @@ namespace ISOMET_Dual_Tracking_System
             }
         }
 
+        private async Task<string> reportInventoryRange(int start, int end)
+        {
+            try
+            {
+                var response = await client.GetAsync($"https://{server1}:443/{database1}/Inventory/getrange?startRange={start}&endRange={end}");
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Received JSON: {json}");
+                    var entries = JsonSerializer.Deserialize<InventoryEntry[]>(json);
+
+                    if (entries != null && entries.Length > 0)
+                    {
+                        StringBuilder messageBuilder = new StringBuilder();
+                        foreach (var entry in entries)
+                        {
+                            messageBuilder.AppendLine($"ID: {entry.Barcode}\nName: {entry.Name}\nLocation: {entry.Location}\nStatus: {entry.Status}\nDate: {entry.Date}\n");
+                            Debug.WriteLine($"Entry: {entry.Barcode}, {entry.Name}, {entry.Location}, {entry.Status}, {entry.Date}");
+                        }
+                        string message = messageBuilder.ToString();
+                        return message;
+                    }
+                    else
+                    {
+                        return $"Unable to search given range.";
+                    }
+                }
+                else
+                {
+                    return "Error connecting to database.";
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return $"{httpEx.Message}";
+            }
+            catch (TaskCanceledException timeoutEx)
+            {
+                return "The request timed out.";
+            }
+            catch (Exception ex)
+            {
+                return $"{ex.Message}";
+            }
+        }
+
         private async Task<string> reportTraveler(string text)
         {
             try
             {
-                var response = await client.GetAsync($"https://{server1}/{database2}/Traveler/get?barcode={text}&report=True");
+                var response = await client.GetAsync($"https://{server1}:443/{database2}/Traveler/get?barcode={text}&report=True");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -296,7 +391,7 @@ namespace ISOMET_Dual_Tracking_System
         {
             try
             {
-                var response = await client.GetAsync($"https://{server1}/{database3}/OScanning/get?barcode={text}&report=False");
+                var response = await client.GetAsync($"https://{server1}:443/{database3}/OScanning/get?barcode={text}&report=False");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -343,7 +438,7 @@ namespace ISOMET_Dual_Tracking_System
         {
             try
             {
-                var response = await client.GetAsync($"https://{server1}/{database1}/Inventory/get?barcode={text}&report=False");
+                var response = await client.GetAsync($"https://{server1}:443/{database1}/Inventory/get?barcode={text}&report=False");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -391,7 +486,7 @@ namespace ISOMET_Dual_Tracking_System
         {
             try
             {
-                var response = await client.GetAsync($"https://{server1}/{database2}/Traveler/get?barcode={text}&report=False");
+                var response = await client.GetAsync($"https://{server1}:443/{database2}/Traveler/get?barcode={text}&report=False");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -438,7 +533,7 @@ namespace ISOMET_Dual_Tracking_System
         {
             try
             {
-                var response = await client.GetAsync($"https://{server1}/{database3}/OScanning/get?barcode={text}&report=False");
+                var response = await client.GetAsync($"https://{server1}:443/{database3}/OScanning/get?barcode={text}&report=False"); // URI says OScanning instead of OTesting because Optical Testing was formerly named Optical Scanning
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -455,16 +550,16 @@ namespace ISOMET_Dual_Tracking_System
                             Debug.WriteLine($"Entry: {entry.Barcode} by {entry.Name} with wavelength {entry.Wavelength} with value 1 {entry.Laser1} with value 2 {entry.Laser2} with {entry.StaticLoss} on {entry.Date}.");
                         }
                         string message = messageBuilder.ToString();
-                        await App.Current.MainPage.DisplayAlert("Optical Scanning", message, "OK");
+                        await App.Current.MainPage.DisplayAlert("Optical Testing", message, "OK");
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Optical Scanning", $"{text} not found in database.", "OK");
+                        await App.Current.MainPage.DisplayAlert("Optical Testing", $"{text} not found in database.", "OK");
                     }
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Optical Scanning", "Error connecting to database.", "OK");
+                    await App.Current.MainPage.DisplayAlert("Optical Testing", "Error connecting to database.", "OK");
                 }
             }
             catch (HttpRequestException httpEx)
@@ -486,9 +581,9 @@ namespace ISOMET_Dual_Tracking_System
             try
             {
                 Debug.WriteLine("Starting scannerStatusChecker");
-                Debug.WriteLine($"Server URL: https://{server1}/{database1}/Inventory/get?barcode={text}");
+                Debug.WriteLine($"Server URL: https://{server1}:443/{database1}/Inventory/get?barcode={text}");
 
-                var response = await client.GetAsync($"https://{server1}/{database1}/Inventory/get?barcode={text}&report=False");
+                var response = await client.GetAsync($"https://{server1}:443/{database1}/Inventory/get?barcode={text}&report=False");
                 Debug.WriteLine("Received response.");
                 response.EnsureSuccessStatusCode();
 
@@ -549,7 +644,7 @@ namespace ISOMET_Dual_Tracking_System
         //                          PUBLIC METHODS                           //
         // ----------------------------------------------------------------- //
 
-        public async void scannerMethod(string value)
+        public async Task scannerMethod(string value)
         {
             Debug.WriteLine("AA");
             scannedCode = value;
@@ -576,7 +671,7 @@ namespace ISOMET_Dual_Tracking_System
             Debug.WriteLine("BB");
         }
 
-        public async void readInventory(string value)
+        public async Task readInventory(string value)
         {
             await searchInventory(value);
         }
@@ -587,12 +682,24 @@ namespace ISOMET_Dual_Tracking_System
             return report;
         }
 
-        public async void travelerMethod(string process, string value)
+        public async Task<string> repInventoryRange(int value1, int value2) // Range function for Inventory
+        {
+            string report = await reportInventoryRange(value1, value2);
+            return report;
+        }
+
+        public async Task travelerMethod(string process, string value)
         {
             await scanTraveler(process, value);
         }
 
-        public async void readTraveler(string value)
+        public async Task<string> slicesTravelerMethod(string process, string value)
+        {
+            string status = await scanSlicesTraveler(process, value);
+            return status;
+        }
+
+        public async Task readTraveler(string value)
         {
             await searchTraveler(value);
         }
@@ -603,12 +710,12 @@ namespace ISOMET_Dual_Tracking_System
             return report;
         }
 
-        public async void oscanningMethod(string val1, string val2, string val3, string val4)
+        public async Task oscanningMethod(string val1, string val2, string val3, string val4)
         {
             await scanOpticalScanning(val1, val2, val3, val4);
         }
 
-        public async void readOScanning(string value)
+        public async Task readOScanning(string value)
         {
             await searchOS(value);
         }

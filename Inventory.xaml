@@ -18,25 +18,38 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Item Information
-                </Label.Text>
-            </Label>
+            <Frame BorderColor="Gray"
+                   CornerRadius="10">
+                <StackLayout Spacing="10">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label FontAttributes="Bold">
+                            <Label.Text>
+                                Item Information
+                            </Label.Text>
+                        </Label>
 
-            <Entry x:Name="entry"
-                   Placeholder="Scan/Enter Identifier"
-                   TextChanged="OnEntryTextChanged"
-                   Completed="OnEntryCompleted" 
-                   Keyboard="Numeric" />
+                        <Label x:Name="locationLbl" FontAttributes="Bold" HorizontalOptions="EndAndExpand">
+                            <Label.Text>
+                                LOCATION
+                            </Label.Text>
+                        </Label>
+                    </StackLayout>
 
-            <Button
-                x:Name="ScannerBtn"
-                Text="Submit" 
-                SemanticProperties.Hint="Submit identifier to database"
-                Clicked="OnButtonClicked"
-                HorizontalOptions="Fill" 
-                BackgroundColor="#1E1E1E" />
+                    <Entry x:Name="entry"
+                           Placeholder="Scan/Enter Identifier"
+                           TextChanged="OnEntryTextChanged"
+                           Completed="OnEntryCompleted" 
+                           Keyboard="Numeric" />
+
+                    <Button
+                        x:Name="ScannerBtn"
+                        Text="Submit" 
+                        SemanticProperties.Hint="Submit identifier to database"
+                        Clicked="OnButtonClicked"
+                        HorizontalOptions="Fill" 
+                        BackgroundColor="#1E1E1E" />
+                </StackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 

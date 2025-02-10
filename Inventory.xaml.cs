@@ -10,19 +10,25 @@ namespace ISOMET_Dual_Tracking_System
     {
         SQLAccess database = new SQLAccess();
 
+        static string dptLocation = Preferences.Get("Location", string.Empty);
+
         public Inventory()
         {
             InitializeComponent();
             Loaded += Page_Loaded;
         }
 
-        private void OnButtonClicked(object sender, EventArgs e)
+        private async void OnButtonClicked(object sender, EventArgs e)
         {
+            ScannerBtn.IsEnabled = false; // Disable button to prevent duplicate entries
+
             database.scannedCode = entry.Text;
 
-            database.scannerMethod(entry.Text);
+            await database.scannerMethod(entry.Text);
 
             entry.Text = "";
+
+            ScannerBtn.IsEnabled = true; // Re-enable button after execution of await method is completed
         }
 
         private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
@@ -41,6 +47,7 @@ namespace ISOMET_Dual_Tracking_System
 
         private void Page_Loaded(object sender, EventArgs e)
         {
+            locationLbl.Text = dptLocation;
             entry.Focus();
         }
     }

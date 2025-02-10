@@ -12,60 +12,65 @@
                 HeightRequest="185"
                 Aspect="AspectFit"
                 SemanticProperties.Description="Isomet Corporation logo" />
-            
+
             <Label
-                Text="Optical Scanning"
+                Text="Optical Testing"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Crystal Information
-                </Label.Text>
-            </Label>
+            <Frame BorderColor="Gray"
+                   CornerRadius="10">
+                <StackLayout Spacing="10">
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Crystal Information
+                        </Label.Text>
+                    </Label>
 
-            <Entry x:Name="identifierField"
-                   Placeholder="Crystal Identifier" 
-                   Keyboard="Numeric" />
+                    <Entry x:Name="identifierField"
+                           Placeholder="Crystal Identifier" />
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Wavelength
-                </Label.Text>
-            </Label>
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Wavelength
+                        </Label.Text>
+                    </Label>
 
-            <Entry x:Name="waveField"
-                   Placeholder="Enter wavelength" />
+                    <Entry x:Name="waveField"
+                           Placeholder="Enter wavelength"
+                           Keyboard="Numeric" />            
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Laser
-                </Label.Text>
-            </Label>
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Laser
+                        </Label.Text>
+                    </Label>
 
-            <Entry x:Name="laserField1"
-                   Placeholder="⊥" />
+                    <Entry x:Name="laserField1"
+                           Placeholder="⊥" />
 
-            <Entry x:Name="laserField2"
-                   Placeholder="II" />
+                    <Entry x:Name="laserField2"
+                           Placeholder="II" />
 
-            <Label FontAttributes="Bold">
-                <Label.Text>
-                    Static Loss
-                </Label.Text>
-            </Label>
+                    <Label FontAttributes="Bold">
+                        <Label.Text>
+                            Static Loss
+                        </Label.Text>
+                    </Label>
 
-            <Entry x:Name="slField"
-                   Placeholder="%" />
+                    <Entry x:Name="slField"
+                           Placeholder="%" />
 
-            <Button
-                   x:Name="osBtn"
-                   Text="Submit Data" 
-                   SemanticProperties.Hint="Submit data to database"
-                   Clicked="OnButtonClicked"
-                   HorizontalOptions="Fill" 
-                   BackgroundColor="#1E1E1E" /> 
+                    <Button
+                        x:Name="osBtn"
+                        Text="Submit Data" 
+                        SemanticProperties.Hint="Submit data to database"
+                        Clicked="OnButtonClicked"
+                        HorizontalOptions="Fill" 
+                        BackgroundColor="#1E1E1E" />
+                </StackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
- 
+
 </ContentPage>

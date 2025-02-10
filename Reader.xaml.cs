@@ -6,6 +6,7 @@ public partial class Reader : ContentPage
 
 	int selectedDB;
 	bool reportMode;
+    bool containsDash;
 
     public Reader()
 	{
@@ -57,42 +58,107 @@ public partial class Reader : ContentPage
 		}
 	}
 
-    private async void searchBtnClicked(object sender, EventArgs e)
-	{
-        if (reportMode)
+    private void onTextChanged(object sender, EventArgs e) // The way the report data is displayed would create too much data to be readable, therefore limiting to just "last location" solves that.
+    {
+        string identifierText = identifier.Text;
+
+        if (identifierText.Contains("-"))
         {
-			readerEditor.Text = "Movement History:\n";
-            if (selectedDB == 1)
+            if (selectedDB != 1) // Ensure only Inventory mode is displayed and enabled with a dash
             {
-				string message = await database.repInventory(identifier.Text);
-				readerEditor.Text += message;
+                selectedDB = 1;
+                invButton.IsChecked = true;
+                trvButton.IsChecked = false;
+                osButton.IsChecked = false;
             }
-            else if (selectedDB == 2)
+
+            if (reportMode)
             {
-                string message = await database.repTraveler(identifier.Text);
-                readerEditor.Text += message;
+                reportMode = false;
+
+                reportButton.IsChecked = false;
+                reportButton.IsEnabled = false;
             }
-            else if (selectedDB == 3)
+            else
             {
-                string message = await database.repOS(identifier.Text);
-                readerEditor.Text += message;
+                reportButton.IsEnabled = false;
             }
+
+            containsDash = true;
+            trvButton.IsEnabled = false;
+            osButton.IsEnabled = false;
         }
         else
-		{
-            readerEditor.Text = "";
-            if (selectedDB == 1)
+        {
+            if (containsDash)
             {
-                database.readInventory(identifier.Text);
-            }
-            else if (selectedDB == 2)
-            {
-                database.readTraveler(identifier.Text);
-            }
-            else if (selectedDB == 3)
-            {
-                database.readOScanning(identifier.Text);
+                containsDash = false;
+                reportButton.IsEnabled = true;
+                trvButton.IsEnabled = true;
+                osButton.IsEnabled = true;
             }
         }
+    }
+
+    private async void searchBtnClicked(object sender, EventArgs e)
+	{
+		searchBtn.IsEnabled = false;
+
+		string identifierText = identifier.Text;
+
+		if (identifierText.Contains("-"))
+		{
+			string[] range = identifierText.Split('-');
+
+			if (range.Length == 2 && int.TryParse(range[0], out int startRange) && int.TryParse(range[1], out int endRange))
+			{
+                readerEditor.Text = "Last Locations:\n"; ;
+                if (selectedDB == 1)
+                {
+                    string message = await database.repInventoryRange(startRange, endRange);
+                    readerEditor.Text += message;
+                }
+            }
+		} 
+		else
+		{
+            if (reportMode)
+            {
+                readerEditor.Text = "Movement History:\n";
+                if (selectedDB == 1)
+                {
+                    string message = await database.repInventory(identifier.Text);
+                    readerEditor.Text += message;
+                }
+                else if (selectedDB == 2)
+                {
+                    string message = await database.repTraveler(identifier.Text);
+                    readerEditor.Text += message;
+                }
+                else if (selectedDB == 3)
+                {
+                    string message = await database.repOS(identifier.Text);
+                    readerEditor.Text += message;
+                }
+            }
+            else
+            {
+                readerEditor.Text = "";
+                if (selectedDB == 1)
+                {
+                    await database.readInventory(identifier.Text);
+                }
+                else if (selectedDB == 2)
+                {
+                    await database.readTraveler(identifier.Text);
+                }
+                else if (selectedDB == 3)
+                {
+                    await database.readOScanning(identifier.Text);
+                }
+            }
+        }
+
+		searchBtn.IsEnabled = true;
 	}
 }
